@@ -1,5 +1,7 @@
 # IMDb Sentiment Analysis Research
 
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://YOUR-STREAMLIT-APP-URL-HERE.streamlit.app/)
+
 ## Overview
 
 This project explores sentiment analysis on the IMDb movie review dataset using both traditional NLP techniques and transformer-based deep learning models.
@@ -97,12 +99,16 @@ DistilBERT improved performance by approximately **2.5 percentage points** over 
 
 ---
 
+## Features Completed
+
+* **Streamlit Web Application** for real-time inference.
+* **Model Explainability (SHAP)** integration to visualize token contribution.
+
 ## Future Improvements
 
-* Streamlit deployment
 * Hyperparameter tuning
 * RoBERTa and DeBERTa experiments
-* Model monitoring and explainability
+* Live web scraping of new movie reviews for inference
 
 ---
 
