@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.pyc
+
+# Jupyter
+.ipynb_checkpoints/
+
+# VS Code
+.vscode/
+
+# Environment
+.env
+.venv/
+venv/
+
+# OS Files
+Thumbs.db
+
+# Temporary Files
+*.tmp
+
+# Training Checkpoints
+distilbert_results/
+
+# Raw Dataset
+data/raw/
+
+# DistilBERT Model
+models/distilbert_imdb/
+
+# Large model files
+models/*.zip
