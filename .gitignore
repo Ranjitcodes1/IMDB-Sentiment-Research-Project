@@ -25,8 +25,4 @@ distilbert_results/
 # Raw Dataset
 data/raw/
 
-# DistilBERT Model
-models/distilbert_imdb/
-
-# Large model files
-models/*.zip
+# We are using Git LFS for the model
