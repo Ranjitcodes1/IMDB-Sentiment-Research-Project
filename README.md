@@ -1,6 +1,6 @@
 # IMDb Sentiment Analysis Research
 
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://imdb-sentiment-research-project-aapppp9wcxwfkurakjgjtgc.streamlit.app/)
+[![Streamlit App](https://img.shields.io/badge/Streamlit-App-FF4B4B?style=for-the-badge&logo=Streamlit&logoColor=white)](https://imdb-sentiment-research-project-aapppp9wcxwfkurakjgjtgc.streamlit.app/)
 
 
 ## Overview
