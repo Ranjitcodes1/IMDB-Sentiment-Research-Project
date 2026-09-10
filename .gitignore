@@ -21,6 +21,10 @@ Thumbs.db
 
 # Training Checkpoints
 distilbert_results/
+deberta_v3_results/
+
+# Archives & Large Zips
+*.zip
 
 # Raw Dataset
 data/raw/
