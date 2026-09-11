@@ -29,4 +29,5 @@ deberta_v3_results/
 # Raw Dataset
 data/raw/
 
-# We are using Git LFS for the model
+# Model artifacts
+models/deberta_v3_imdb/

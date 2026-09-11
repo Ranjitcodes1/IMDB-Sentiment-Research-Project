@@ -72,3 +72,23 @@ Our manual and programmatic error analysis identified four dominant failure mode
 1. **Deploy DeBERTa-v3-base**: Disentangled attention and enhanced mask decoding offer significantly better modeling of long-range dependencies and contrastive discourse markers.
 2. **Context Window Expansion to 512**: Eliminates the information loss caused by truncating at 256 tokens.
 3. **Calibrated Confidence Thresholding**: For reviews near $P(\text{Positive}) \approx 0.50$, implement an "Uncertain / Mixed" threshold to avoid forced misclassifications.
+
+---
+
+## 5. Empirical Case Study: Numerical Stability & Gradient Overflow in Disentangled Attention (DeBERTa-v3)
+
+During scaling experiments to transition from DistilBERT to DeBERTa-v3-base on the IMDb dataset, an empirical training anomaly was diagnosed and documented:
+
+### A. The Phenomenon
+* **Symptom**: During mixed-precision training (`fp16=True`) using standard AdamW hyperparameters (`lr=2e-5`, `eps=1e-8`), the training loss progressively dropped to `0.239`, yet the evaluation metrics suddenly produced `Validation Loss: nan`, `Accuracy: 0.500000`, and `F1: 0.000000`.
+* **Mechanism**: In Python, when binary classifier logits become `[NaN, NaN]`, calling `np.argmax([nan, nan])` yields `0` (Negative) for every sample. On a 50/50 balanced dataset of 25,000 test reviews, predicting all `0`s produces an exact artifact accuracy of **50.00%**.
+
+### B. Root-Cause Analysis
+* Unlike standard BERT/DistilBERT architectures that use unified positional and content embeddings, **DeBERTa-v3 uses Disentangled Attention** where content and relative positions are represented in two separate vectors, combined via decomposed attention matrices.
+* Combined with Replaced Token Detection (RTD) pre-training, DeBERTa's attention score scales can experience extreme gradient spikes early in fine-tuning. Under standard 16-bit half precision (`fp16`), the dynamic loss scaler overflows the IEEE 754 half-precision exponent range ($\pm 65,504$), introducing `inf` values that poison the weights into `NaN`.
+
+### C. Resolution Protocol
+1. **Disable Standard FP16**: Transition to full precision (`fp16=False`) or Bfloat16 (`bf16=True` on Ampere/A100 GPUs) which preserves the full 8-bit dynamic range of FP32.
+2. **Gradient Clipping & Optimizer Epsilon**: Enforce `max_grad_norm=1.0` and increase optimizer numerical stability via `adam_epsilon=1e-6`.
+3. **Conservative Learning Rate with Warmup**: Lower the initial peak learning rate to `1e-5` with 500 linear warmup steps to prevent early attention matrix divergence.
+
